@@ -1,12 +1,15 @@
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useAuth } from "src/lib/auth";
 
 const Register = () => {
   const { handleSubmit, register } = useForm();
   const { createUserWithEmailAndPassword } = useAuth();
+  const router = useRouter();
 
   const onSubmit = async (data: any) => {
     await createUserWithEmailAndPassword(data.email, data.password, data);
+    router.push("/login");
   };
 
   return (

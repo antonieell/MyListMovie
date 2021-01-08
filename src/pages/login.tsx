@@ -1,14 +1,18 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "src/lib/auth";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Login = () => {
   const { handleSubmit, register } = useForm();
   const { loginWithEmailAndPassword } = useAuth();
+  const router = useRouter();
 
   const onSubmit = async (data: any) => {
-    const resp = await loginWithEmailAndPassword(data.email, data.password);
+    await loginWithEmailAndPassword(data.email, data.password);
+    router.push("/");
   };
+
   return (
     <div>
       <div className="flex items-center content-center w-full min-h-screen px-4 text-black bg-gray-800">
@@ -57,7 +61,7 @@ const Login = () => {
         </form>
       </div>
     </div>
-  )
+  );
 };
 
 export default Login;
