@@ -2,9 +2,7 @@ import { useAuth } from "src/lib/auth";
 import Link from "next/link";
 
 export const NavBar: React.FC = () => {
-  //TODO
   const { signout, user } = useAuth();
-  const isAuthenticated = user;
   return (
     <header className="absolute inset-0 h-12 px-4 text-black bg-gray-100 shadow">
       <nav className="relative flex items-center justify-between h-full px-4 mx-auto max-w-screen-xl">
@@ -13,7 +11,7 @@ export const NavBar: React.FC = () => {
             <h1 className="font-extrabold">My List</h1>
           </a>
         </Link>
-        {isAuthenticated ? (
+        {user ? (
           <NavAuthenticated {...{ signout }} />
         ) : (
           <NavWhitoutAuthentication />

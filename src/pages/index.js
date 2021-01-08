@@ -1,5 +1,6 @@
 import Head from "next/head";
 import PopularMovies from "../components/PopularMovies";
+import HOCPrivateRoute from "src/HOC/PrivateRoute";
 
 export default function Home() {
   return (
@@ -9,7 +10,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        < PopularMovies/>
+        <HOCPrivateRoute>
+          <PopularMovies />
+        </HOCPrivateRoute>
       </main>
     </>
   );

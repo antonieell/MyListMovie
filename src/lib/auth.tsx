@@ -1,6 +1,7 @@
 import firebase from "./firebase";
 import { createContext, useState, useContext } from "react";
 import { createUser } from "./db";
+import { getLocalStorage, setLocalStorage } from "src/utils/localStorage";
 
 const authContext = createContext<any | null>(null);
 
@@ -14,16 +15,18 @@ export const useAuth = () => {
 };
 
 function useProvideAuth() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(getLocalStorage("user"));
 
   const handleUser = (rawUser, data = {}) => {
     if (rawUser) {
       const user = formatUser(rawUser);
       createUser(user.uid, data);
       setUser(user);
+      setLocalStorage("user", user);
       return user;
     } else {
       setUser(false);
+      setLocalStorage("user", null);
       return false;
     }
   };
@@ -34,6 +37,7 @@ function useProvideAuth() {
       .signInWithEmailAndPassword(email, password);
     const formatedUser = formatUser(user);
     setUser(formatedUser);
+    setLocalStorage("user", formatedUser);
     return formatedUser;
   };
 
@@ -49,10 +53,9 @@ function useProvideAuth() {
   };
 
   const signout = async () => {
-    return firebase
-      .auth()
-      .signOut()
-      .then(() => handleUser(false));
+    await firebase.auth().signOut();
+    handleUser(false);
+    return;
   };
 
   return {
