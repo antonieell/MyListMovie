@@ -15,7 +15,7 @@ const PopularMovies = () => {
     getMovies();
   }, []);
   return (
-    <section className="content-center p-4 gap-1 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 overflow-x">
+    <section className="content-center p-4 gap-1 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 overflow-x">
       <h2 className="text-4xl font-black text-black col-span-full">
         Filmes em Alta
       </h2>
