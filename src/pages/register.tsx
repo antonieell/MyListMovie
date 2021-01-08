@@ -6,8 +6,7 @@ const Register = () => {
   const { createUserWithEmailAndPassword } = useAuth();
 
   const onSubmit = async (data: any) => {
-    const dataWithoutPassword = { ...data, password: undefined };
-    await createUserWithEmailAndPassword(data.email, data.password, dataWithoutPassword);
+    await createUserWithEmailAndPassword(data.email, data.password, data);
   };
 
   return (

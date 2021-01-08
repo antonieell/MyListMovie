@@ -1,4 +1,5 @@
 import Head from "next/head";
+import MovieList from '../components/MovieList'
 
 export default function Home() {
   return (
@@ -7,7 +8,9 @@ export default function Home() {
         <title>Movie List</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>Movie List</div>
+      <main>
+        <MovieList/>
+      </main>
     </>
   );
 }
