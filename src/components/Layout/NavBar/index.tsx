@@ -1,11 +1,19 @@
+import { useAuth } from "src/lib/auth";
+import Link from  'next/link'
+
 export const NavBar: React.FC = () => {
   //TODO
-  const isAuthenticated = false;
+  const { signout, user } = useAuth();
+  const isAuthenticated = user;
   return (
     <header className="absolute inset-0 h-12 px-4 text-black bg-gray-100 shadow">
       <nav className="relative flex items-center justify-between h-full px-4 mx-auto max-w-screen-xl">
         <h1 className="font-extrabold">My List</h1>
-        {isAuthenticated ? <NavAuthenticated /> : <NavWhitoutAuthentication />}
+        {isAuthenticated ? (
+          <NavAuthenticated {...{ signout }} />
+        ) : (
+          <NavWhitoutAuthentication />
+        )}
       </nav>
     </header>
   );
@@ -14,17 +22,26 @@ export const NavBar: React.FC = () => {
 const NavWhitoutAuthentication = () => {
   return (
     <div className="flex space-x-4">
-      <a>Login</a>
-      <a>Cadastro</a>
+      <Link href="/login">
+        <a href="/register">Login</a>
+      </Link>
+
+      <Link href="/register">
+        <a href="/register">Cadastro</a>
+      </Link>
     </div>
   );
 };
 
-const NavAuthenticated = () => {
+interface NavAuthenticatedProps {
+  signout: () => void;
+}
+const NavAuthenticated = ({ signout }: NavAuthenticatedProps) => {
   return (
     <div className="flex space-x-4">
       <a>Meu Perfil</a>
       <a>Minhas Listas</a>
+      <button onClick={signout}>Logout</button>
     </div>
   );
 };

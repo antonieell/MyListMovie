@@ -6,8 +6,8 @@ const Register = () => {
   const { createUserWithEmailAndPassword } = useAuth();
 
   const onSubmit = async (data: any) => {
-    const resp = await createUserWithEmailAndPassword(data.email, data.password);
-    console.log(resp)
+    const dataWithoutPassword = { ...data, password: undefined };
+    await createUserWithEmailAndPassword(data.email, data.password, dataWithoutPassword);
   };
 
   return (
@@ -40,6 +40,17 @@ const Register = () => {
               ref={register}
               className="w-full px-3 py-2 leading-tight text-gray-700 border border-blue-300 rounded shadow appearance-none focus:outline-none focus:shadow-outline "
               placeholder="John Doe"
+            />
+          </div>
+          <div className="px-4 pb-4">
+            <label htmlFor="password" className="block pb-2 text-sm font-bold">
+              Data Nascimento
+            </label>
+            <input
+              type="date"
+              name="dataNascimento"
+              ref={register}
+              className="w-full px-3 py-2 leading-tight text-gray-700 border border-blue-300 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
             />
           </div>
           <div className="px-4 pb-4">

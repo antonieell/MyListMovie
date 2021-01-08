@@ -1,5 +1,5 @@
 import firebase from "./firebase";
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useContext } from "react";
 import { createUser } from "./db";
 
 const authContext = createContext<any | null>(null);
@@ -16,10 +16,10 @@ export const useAuth = () => {
 function useProvideAuth() {
   const [user, setUser] = useState(null);
 
-  const handleUser = (rawUser) => {
+  const handleUser = (rawUser, data = {}) => {
     if (rawUser) {
       const user = formatUser(rawUser);
-      createUser(user.uid, user);
+      createUser(user.uid, data);
       setUser(user);
       return user;
     } else {
@@ -28,17 +28,27 @@ function useProvideAuth() {
     }
   };
 
+  const loginWithEmailAndPassword = async (email: string, password: string) => {
+    const { user } = await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password);
+    const formatedUser = formatUser(user);
+    setUser(formatedUser);
+    return formatedUser;
+  };
+
   const createUserWithEmailAndPassword = async (
     email: string,
-    password: string
+    password: string,
+    data: any
   ) => {
     const { user } = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password);
-    return handleUser(user);
+    return handleUser(user, data);
   };
 
-  const signout = () => {
+  const signout = async () => {
     return firebase
       .auth()
       .signOut()
@@ -49,6 +59,7 @@ function useProvideAuth() {
     user,
     signout,
     createUserWithEmailAndPassword,
+    loginWithEmailAndPassword,
   };
 }
 
