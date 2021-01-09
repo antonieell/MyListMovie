@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "src/lib/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Layout } from "../components/Layout/index";
 
 const Login = () => {
   const { handleSubmit, register } = useForm();
@@ -14,7 +15,7 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <Layout>
       <div className="flex items-center content-center w-full min-h-screen px-4 text-black bg-gray-800">
         <form
           className="w-full max-w-3xl px-4 py-8 m-auto mx-auto bg-white rounded shadow-md "
@@ -60,7 +61,7 @@ const Login = () => {
           </div>
         </form>
       </div>
-    </div>
+    </Layout>
   );
 };
 

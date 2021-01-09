@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useAuth } from "src/lib/auth";
+import { Layout } from "../components/Layout/index";
 
 const Register = () => {
   const { handleSubmit, register } = useForm();
@@ -13,7 +14,7 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <Layout>
       <div className="flex items-center content-center w-full min-h-screen px-4 text-black bg-gray-800">
         <form
           className="w-full max-w-3xl px-4 py-8 m-auto mx-auto bg-white rounded shadow-md "
@@ -77,7 +78,7 @@ const Register = () => {
           </div>
         </form>
       </div>
-    </div>
+    </Layout>
   );
 };
 
