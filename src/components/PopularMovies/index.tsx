@@ -7,7 +7,7 @@ const PopularMovies = () => {
   useEffect(() => {
     const getMovies = async () => {
       const response = await fetch(
-        `https://api.themoviedb.org/3/movie/popular?api_key=653b1e2db7a22d84a9a8e10903d1d7dc`
+        `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.NEXT_PUBLIC_API_KEY}`
       );
       const { results }: { results: Result[] } = await response.json();
       setMovies(results);
