@@ -1,4 +1,10 @@
-import { createContext, useEffect, useState, useContext } from "react";
+import {
+  createContext,
+  useEffect,
+  useState,
+  useContext,
+  useCallback,
+} from "react";
 import { useAuth } from "src/lib/auth";
 import { getUserProfile } from "src/lib/db";
 import { getLocalStorage, setLocalStorage } from "src/utils/localStorage";
@@ -20,19 +26,31 @@ export const useProfile = () => {
 
 function useProviderProfile() {
   const [allProfiles, setAllProfiles] = useState([]);
+  const [currentProfile, setCurrentProfile] = useState(
+    getLocalStorage("currentProfile")
+  );
   const { user } = useAuth();
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (user) {
-        const resp = await getUserProfile(user.uid);
-        setAllProfiles(resp);
-      }
-    };
-    fetchUserProfile();
+  const setStorageCurrentProfile = useCallback((data) => {
+    setCurrentProfile(data);
+    setLocalStorage("currentProfile", data);
+  }, []);
+
+  const fetchUserProfile = useCallback(async () => {
+    if (user) {
+      const resp = await getUserProfile(user.uid);
+      setAllProfiles(resp);
+    }
   }, [user]);
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, [fetchUserProfile]);
 
   return {
     allProfiles,
+    fetchUserProfile,
+    setStorageCurrentProfile,
+    currentProfile
   };
 }

@@ -32,7 +32,10 @@ export async function getUserProfile(uid: string) {
       .doc(uid)
       .collection("profiles")
       .get();
-    return snapshot.docs.map((snap) => snap.data());
+    return snapshot.docs.map((snap) => ({
+      profileId: snap.id,
+      ...snap.data(),
+    }));
   } catch (error) {
     console.log(error);
   }

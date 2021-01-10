@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useProfile } from "src/contexts/profiles";
 import { useAuth } from "src/lib/auth";
 import { setUserProfile } from "src/lib/db";
 
@@ -9,13 +10,16 @@ interface PopUpCreateNewProfileProps {
 export const PopUpCreateNewProfile: React.FC<PopUpCreateNewProfileProps> = ({
   setPopUpOpen,
 }) => {
+  const { fetchUserProfile } = useProfile();
   const { user } = useAuth();
   const [profileName, setProfileName] = useState("");
 
   const createNewProfile = useCallback(async () => {
     await setUserProfile(user.uid, profileName);
+    await fetchUserProfile();
     setProfileName("");
-  }, [user.id, profileName]);
+    setPopUpOpen(false);
+  }, [user, profileName, setPopUpOpen, fetchUserProfile]);
 
   return (
     <div className="absolute inset-0 z-10 grid place-items-center">
