@@ -1,3 +1,7 @@
+import { useState, useCallback } from "react";
+import { useAuth } from "src/lib/auth";
+import { setUserProfile } from "src/lib/db";
+
 interface PopUpCreateNewProfileProps {
   setPopUpOpen: (x: boolean) => void;
 }
@@ -5,6 +9,14 @@ interface PopUpCreateNewProfileProps {
 export const PopUpCreateNewProfile: React.FC<PopUpCreateNewProfileProps> = ({
   setPopUpOpen,
 }) => {
+  const { user } = useAuth();
+  const [profileName, setProfileName] = useState("");
+
+  const createNewProfile = useCallback(async () => {
+    await setUserProfile(user.uid, profileName);
+    setProfileName("");
+  }, [user.id, profileName]);
+
   return (
     <div className="absolute inset-0 z-10 grid place-items-center">
       <span
@@ -19,6 +31,8 @@ export const PopUpCreateNewProfile: React.FC<PopUpCreateNewProfileProps> = ({
           <input
             type="text"
             placeholder="Qual nome do perfil ?"
+            value={profileName}
+            onChange={(e) => setProfileName(e.target.value)}
             autoComplete="profile"
             className="w-full h-8 py-6 pl-2 text-2xl border border-gray-400 rounded"
           />
@@ -30,7 +44,10 @@ export const PopUpCreateNewProfile: React.FC<PopUpCreateNewProfileProps> = ({
           >
             Cancelar
           </button>
-          <button className="flex-grow px-4 py-2 font-bold text-white bg-black rounded">
+          <button
+            onClick={() => createNewProfile()}
+            className="flex-grow px-4 py-2 font-bold text-white bg-black rounded"
+          >
             Confirmar
           </button>
         </div>
