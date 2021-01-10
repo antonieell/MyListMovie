@@ -1,13 +1,21 @@
 import Head from "next/head";
 import HOCPrivateRoute from "src/HOC/PrivateRoute";
+import {
+  Container,
+  ProfileCard,
+  PopUpCreateNewProfile,
+  CreateNewProfile,
+} from "src/components/ProfilePage";
+import { useState } from "react";
 
 const profiles = [
   { name: "rafaela" },
   { name: "marcos" },
-  { name: "rafaela" },
-  { name: "marcos" },
+  { name: "rafael2a" },
 ];
+
 export default function Home() {
+  const [isPopUpOpen, setPopUpOpen] = useState(false);
   return (
     <>
       <Head>
@@ -15,26 +23,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HOCPrivateRoute>
-        <main className="w-full min-h-screen px-4 bg-gray-800 gap-4">
-          <div className="items-center justify-center min-h-screen text-black place-content-center grid grid-cols-2 auto-cols-auto md:grid-cols-4">
-            {profiles.map((v) => (
-              <ProfileCard key={v.name} profile={v} />
-            ))}
-          </div>
-        </main>
+        <Container>
+          <ProfileCard profiles={profiles} />
+          {isPopUpOpen && <PopUpCreateNewProfile {...{ setPopUpOpen }} />}
+          {profiles.length < 4 && <CreateNewProfile {...{ setPopUpOpen }} />}
+        </Container>
       </HOCPrivateRoute>
     </>
   );
 }
-
-interface ProfileCardProps {
-  profile: { name: string };
-}
-
-const ProfileCard = ({ profile }: ProfileCardProps) => {
-  return (
-    <div className="flex items-center justify-center flex-shrink-0 w-full h-32 bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300 md:h-64 transform scale-90">
-      <span className="text-4xl font-extrabold">{profile.name}</span>
-    </div>
-  );
-};

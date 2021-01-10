@@ -1,5 +1,5 @@
 export const getLocalStorage = (key: string) => {
-  if (typeof window !== undefined) {
+  if (typeof window !== "undefined") {
     try {
       const data = JSON.parse(window.localStorage.getItem(key));
       return data;
@@ -10,7 +10,7 @@ export const getLocalStorage = (key: string) => {
 };
 
 export const setLocalStorage = (key: string, data: any) => {
-  if (typeof window !== undefined) {
+  if (typeof window !== "undefined") {
     try {
       window.localStorage.setItem(key, JSON.stringify(data));
     } catch (e) {
