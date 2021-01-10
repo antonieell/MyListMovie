@@ -26,12 +26,11 @@ function useProviderProfile() {
     const fetchUserProfile = async () => {
       if (user) {
         const resp = await getUserProfile(user.uid);
-        setAllProfiles(resp.data().profileAccounts);
+        resp.exists && setAllProfiles(resp.data().profileAccounts);
       }
     };
     fetchUserProfile();
   }, [user]);
-
 
   return {
     allProfiles,
