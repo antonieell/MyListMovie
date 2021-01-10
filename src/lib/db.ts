@@ -23,7 +23,7 @@ export async function setUserProfile(uid, profileName) {
       .doc(uid)
       .update({
         uid,
-        profileAcconunts: firebase.firestore.FieldValue.arrayUnion({
+        profileAccounts: firebase.firestore.FieldValue.arrayUnion({
           name: profileName,
           wishList: [],
         }),
@@ -34,10 +34,14 @@ export async function setUserProfile(uid, profileName) {
       .doc(uid)
       .set({
         uid,
-        profileAcconunts: firebase.firestore.FieldValue.arrayUnion({
+        profileAccounts: firebase.firestore.FieldValue.arrayUnion({
           name: profileName,
           wishList: [],
         }),
       });
   }
+}
+
+export async function getUserProfile(uid) {
+  return firestore.collection("profiles").doc(uid).get();
 }
