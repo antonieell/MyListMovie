@@ -1,5 +1,7 @@
 import { Result } from "src/types/tmdb";
 import Image from "next/image";
+import { AiOutlinePlus, AiOutlineCheck } from "react-icons/ai";
+import { useCallback } from "react";
 
 interface MovieCard {
   value: Result;
@@ -8,9 +10,10 @@ interface MovieCard {
 const MovieCard = ({ value }: MovieCard) => {
   return (
     <div
-      className="w-full mx-auto bg-blue-900 radius-sm rounded-xl hover:opacity-95 hover:bg-gray-800"
+      className="relative w-full mx-auto bg-blue-900 radius-sm rounded-xl hover:opacity-95 hover:bg-gray-800"
       style={{ maxWidth: "500px" }}
     >
+      <WatchLater movie={value} />
       <Image
         width={342}
         height={513}
@@ -27,4 +30,53 @@ const MovieCard = ({ value }: MovieCard) => {
     </div>
   );
 };
+
+interface WatchLaterProps {
+  alreadyInList?: boolean;
+  movie: Result;
+}
+const WatchLater: React.FC<WatchLaterProps> = ({
+  alreadyInList = false,
+  movie,
+}) => {
+  const handleList = useCallback((action) => {
+    switch (action) {
+      case "add":
+        console.log("add", movie);
+        break;
+      case "remove":
+        console.log("remove", movie);
+        break;
+
+      default:
+        break;
+    }
+  }, []);
+
+  if (alreadyInList) {
+    return (
+      <button
+        title="Remover da sua lista"
+        className="absolute z-20 p-2 rounded-sm top-2 right-2"
+        onClick={() => handleList("remove")}
+      >
+        <AiOutlineCheck
+          size={32}
+          color="#08ff08"
+          className="bg-gray-900 hover:bg-gray-500"
+        />
+      </button>
+    );
+  }
+  return (
+    <button
+      title="Adicionar à sua lista"
+      className="absolute z-20 p-2 rounded-sm top-2 right-2"
+      onClick={() => handleList("add")}
+    >
+      <AiOutlinePlus size={32} className="bg-gray-900 hover:bg-gray-500" />
+    </button>
+  );
+};
+
 export default MovieCard;
