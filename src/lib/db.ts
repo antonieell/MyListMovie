@@ -2,46 +2,38 @@ import firebase from "./firebase";
 
 const firestore = firebase.firestore();
 
-export function createUser(uid, data) {
+const usersCollectionRef = firestore.collection("users");
+
+export function createUser(uid: string, data: any) {
   if (data && uid) {
     delete data.password;
-    return firestore
-      .collection("users")
-      .doc(uid)
-      .set({ uid, ...data }, { merge: true });
+    return usersCollectionRef.doc(uid).set({ uid, ...data }, { merge: true });
   }
 }
 
-export async function setUserProfile(uid, profileName) {
+export async function setUserProfile(uid: string, profileName: string) {
   // Essa rotina pode ser otimizada se quando o usuário criar sua conta
   // Ele já tenha um Perfil Padrão, nãos sendo necessário alternar entre
   // as funções de set e update
 
   try {
-    return await firestore
-      .collection("profiles")
-      .doc(uid)
-      .update({
-        uid,
-        profileAccounts: firebase.firestore.FieldValue.arrayUnion({
-          name: profileName,
-          wishList: [],
-        }),
-      });
+    return await usersCollectionRef.doc(uid).collection("profiles").doc().set({
+      name: profileName,
+      wishList: [],
+    });
   } catch (error) {
-    return await firestore
-      .collection("profiles")
-      .doc(uid)
-      .set({
-        uid,
-        profileAccounts: firebase.firestore.FieldValue.arrayUnion({
-          name: profileName,
-          wishList: [],
-        }),
-      });
+    console.log(error);
   }
 }
 
-export async function getUserProfile(uid) {
-  return firestore.collection("profiles").doc(uid).get();
+export async function getUserProfile(uid: string) {
+  try {
+    const snapshot = await usersCollectionRef
+      .doc(uid)
+      .collection("profiles")
+      .get();
+    return snapshot.docs.map((snap) => snap.data());
+  } catch (error) {
+    console.log(error);
+  }
 }
