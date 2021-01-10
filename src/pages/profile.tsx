@@ -4,15 +4,8 @@ import {
   Container,
   ProfileCard,
   PopUpCreateNewProfile,
-  CreateNewProfile,
 } from "src/components/ProfilePage";
 import { useState } from "react";
-
-const profiles = [
-  { name: "rafaela" },
-  { name: "marcos" },
-  { name: "rafael2a" },
-];
 
 export default function Home() {
   const [isPopUpOpen, setPopUpOpen] = useState(false);
@@ -24,9 +17,8 @@ export default function Home() {
       </Head>
       <HOCPrivateRoute>
         <Container>
-          <ProfileCard profiles={profiles} />
+          <ProfileCard {...{ setPopUpOpen }} />
           {isPopUpOpen && <PopUpCreateNewProfile {...{ setPopUpOpen }} />}
-          {profiles.length < 4 && <CreateNewProfile {...{ setPopUpOpen }} />}
         </Container>
       </HOCPrivateRoute>
     </>
