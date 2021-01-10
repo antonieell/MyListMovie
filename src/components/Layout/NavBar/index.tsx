@@ -41,8 +41,12 @@ interface NavAuthenticatedProps {
 const NavAuthenticated = ({ signout }: NavAuthenticatedProps) => {
   return (
     <div className="flex space-x-4">
-      <a>Meu Perfil</a>
-      <a>Minhas Listas</a>
+      <Link href="/profile">
+        <a>Meu Perfil</a>
+      </Link>
+      <Link href="#">
+        <a>Minhas Listas</a>
+      </Link>
       <button onClick={signout}>Logout</button>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useProfile } from "src/contexts/profiles";
 import { CreateNewProfile } from "src/components/ProfilePage";
 import { useCallback } from "react";
+import { useRouter } from "next/router";
 
 interface ProfileCardProps {
   setPopUpOpen: (x: boolean) => void;
@@ -8,10 +9,12 @@ interface ProfileCardProps {
 
 export const ProfileCard: React.FC<ProfileCardProps> = ({ setPopUpOpen }) => {
   const { allProfiles, setStorageCurrentProfile } = useProfile();
+  const router = useRouter();
 
   const selectProfile = useCallback(
     (data) => {
       setStorageCurrentProfile(data);
+      router.push("/");
     },
     [setStorageCurrentProfile]
   );

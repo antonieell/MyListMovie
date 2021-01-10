@@ -11,7 +11,7 @@ const Login = () => {
 
   const onSubmit = async (data: any) => {
     await loginWithEmailAndPassword(data.email, data.password);
-    router.push("/");
+    router.push("/profile");
   };
 
   return (

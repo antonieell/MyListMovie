@@ -55,6 +55,7 @@ function useProvideAuth() {
   const signout = async () => {
     await firebase.auth().signOut();
     handleUser(false);
+    setLocalStorage("currentProfile", null);
     return;
   };
 
