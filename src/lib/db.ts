@@ -12,10 +12,6 @@ export function createUser(uid: string, data: any) {
 }
 
 export async function setUserProfile(uid: string, profileName: string) {
-  // Essa rotina pode ser otimizada se quando o usuário criar sua conta
-  // Ele já tenha um Perfil Padrão, nãos sendo necessário alternar entre
-  // as funções de set e update
-
   try {
     return await usersCollectionRef.doc(uid).collection("profiles").doc().set({
       name: profileName,

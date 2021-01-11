@@ -36,21 +36,19 @@ function useProviderProfile() {
     setLocalStorage("currentProfile", data);
   }, []);
 
-  const fetchUserProfile = useCallback(async () => {
-    if (user) {
-      const resp = await getUserProfile(user.uid);
-      setAllProfiles(resp);
-    }
-  }, [user]);
-
+  // Fetch All profiles
   useEffect(() => {
-    fetchUserProfile();
-  }, [fetchUserProfile]);
+    (async () => {
+      if (user) {
+        const resp = await getUserProfile(user.uid);
+        setAllProfiles(resp);
+      }
+    })();
+  }, [user]);
 
   return {
     allProfiles,
-    fetchUserProfile,
     setStorageCurrentProfile,
-    currentProfile
+    currentProfile,
   };
 }

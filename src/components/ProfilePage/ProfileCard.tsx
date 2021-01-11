@@ -11,12 +11,13 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ setPopUpOpen }) => {
   const { allProfiles, setStorageCurrentProfile } = useProfile();
   const router = useRouter();
 
+  // Callback to onClick pick the Profile
   const selectProfile = useCallback(
     (data) => {
       setStorageCurrentProfile(data);
       router.push("/");
     },
-    [setStorageCurrentProfile]
+    [setStorageCurrentProfile, router]
   );
 
   return (

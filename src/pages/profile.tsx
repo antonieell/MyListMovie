@@ -5,21 +5,16 @@ import {
   PopUpCreateNewProfile,
 } from "src/components/ProfilePage";
 import { useEffect, useState } from "react";
-import { useAuth } from "src/lib/auth";
-import { useRouter } from "next/router";
 import { setLocalStorage } from "src/utils/localStorage";
+import HOCPrivateRoute from "src/HOC/PrivateRoute";
 
 export default function Home() {
+  // Toggle popup to create new profile
   const [isPopUpOpen, setPopUpOpen] = useState(false);
-  const router = useRouter();
-  const { user } = useAuth();
 
   useEffect(() => {
+    // Reset currentProfile from localStorage
     setLocalStorage("currentProfile", null);
-    if (!user) {
-      console.log("Você precisa estar logado para escolher um perfil");
-      router.push("/login");
-    }
   });
 
   return (
@@ -28,10 +23,12 @@ export default function Home() {
         <title>Movie List</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container>
-        <ProfileCard {...{ setPopUpOpen }} />
-        {isPopUpOpen && <PopUpCreateNewProfile {...{ setPopUpOpen }} />}
-      </Container>
+      <HOCPrivateRoute>
+        <Container>
+          <ProfileCard {...{ setPopUpOpen }} />
+          {isPopUpOpen && <PopUpCreateNewProfile {...{ setPopUpOpen }} />}
+        </Container>
+      </HOCPrivateRoute>
     </>
   );
 }

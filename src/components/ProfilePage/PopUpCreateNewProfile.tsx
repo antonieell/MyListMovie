@@ -15,7 +15,9 @@ export const PopUpCreateNewProfile: React.FC<PopUpCreateNewProfileProps> = ({
   const [profileName, setProfileName] = useState("");
 
   const createNewProfile = useCallback(async () => {
+    // Persist new profile
     await setUserProfile(user.uid, profileName);
+    // Upedate profile list
     await fetchUserProfile();
     setProfileName("");
     setPopUpOpen(false);
