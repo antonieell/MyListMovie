@@ -1,7 +1,13 @@
-import { createContext, useState, useContext, useCallback } from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  useCallback,
+  useEffect,
+} from "react";
 import { useAuth } from "src/lib/auth";
 import { updateWishList } from "src/lib/db";
-import { setLocalStorage } from "src/utils/localStorage";
+import { getLocalStorage, setLocalStorage } from "src/utils/localStorage";
 import { Result } from "src/types/tmdb";
 
 const profileContext = createContext<any | null>(null);
@@ -22,7 +28,15 @@ export const useProfile = () => {
 function useProviderProfile() {
   const { user } = useAuth();
   const [myList, setMyList] = useState<Array<Result>>([]);
-  const [currentProfile, setCurrentProfile] = useState(null);
+  const [currentProfile, setCurrentProfile] = useState(
+    getLocalStorage("currentProfile")
+  );
+
+  useEffect(() => {
+    if (currentProfile) {
+      setMyList(currentProfile.wishList);
+    }
+  }, [currentProfile]);
 
   const setStorageCurrentProfile = useCallback((data) => {
     setCurrentProfile(data);
