@@ -1,5 +1,6 @@
 import Head from "next/head";
 import MyListComponent from "src/components/MyList/";
+import RelatedMovies from "src/components/RelatedMovies";
 import HOCPrivateRoute from "src/HOC/PrivateRoute";
 import { Layout } from "../components/Layout/index";
 
@@ -14,6 +15,7 @@ export default function MyList() {
         <main className="mx-auto max-w-screen-xl">
           <HOCPrivateRoute>
             <MyListComponent />
+            <RelatedMovies />
           </HOCPrivateRoute>
         </main>
       </Layout>
