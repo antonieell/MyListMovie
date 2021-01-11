@@ -7,15 +7,29 @@ import {
 import { useEffect, useState } from "react";
 import { setLocalStorage } from "src/utils/localStorage";
 import HOCPrivateRoute from "src/HOC/PrivateRoute";
+import { useProfile } from "src/contexts/profiles";
+import { getUserProfile } from "src/lib/db";
+import { useAuth } from "src/lib/auth";
 
 export default function Home() {
   // Toggle popup to create new profile
   const [isPopUpOpen, setPopUpOpen] = useState(false);
+  const { setMyList } = useProfile();
+  const [allProfiles, setAllProfiles] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     // Reset currentProfile from localStorage
     setLocalStorage("currentProfile", null);
-  });
+    setMyList([]);
+    // fetch All profiles
+    (async () => {
+      if (user) {
+        const resp = await getUserProfile(user.uid);
+        setAllProfiles(resp);
+      }
+    })();
+  }, [setMyList, setAllProfiles, user]);
 
   return (
     <>
@@ -25,7 +39,7 @@ export default function Home() {
       </Head>
       <HOCPrivateRoute>
         <Container>
-          <ProfileCard {...{ setPopUpOpen }} />
+          <ProfileCard {...{ setPopUpOpen, allProfiles }} />
           {isPopUpOpen && <PopUpCreateNewProfile {...{ setPopUpOpen }} />}
         </Container>
       </HOCPrivateRoute>

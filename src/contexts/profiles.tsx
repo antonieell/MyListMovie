@@ -1,13 +1,8 @@
-import {
-  createContext,
-  useEffect,
-  useState,
-  useContext,
-  useCallback,
-} from "react";
+import { createContext, useState, useContext, useCallback } from "react";
 import { useAuth } from "src/lib/auth";
-import { getUserProfile } from "src/lib/db";
-import { getLocalStorage, setLocalStorage } from "src/utils/localStorage";
+import { updateWishList } from "src/lib/db";
+import { setLocalStorage } from "src/utils/localStorage";
+import { Result } from "src/types/tmdb";
 
 const profileContext = createContext<any | null>(null);
 
@@ -25,30 +20,52 @@ export const useProfile = () => {
 };
 
 function useProviderProfile() {
-  const [allProfiles, setAllProfiles] = useState([]);
-  const [currentProfile, setCurrentProfile] = useState(
-    getLocalStorage("currentProfile")
-  );
   const { user } = useAuth();
+  const [myList, setMyList] = useState<Array<Result>>([]);
+  const [currentProfile, setCurrentProfile] = useState(null);
 
   const setStorageCurrentProfile = useCallback((data) => {
     setCurrentProfile(data);
     setLocalStorage("currentProfile", data);
+    setMyList(data.wishList);
   }, []);
 
-  // Fetch All profiles
-  useEffect(() => {
-    (async () => {
-      if (user) {
-        const resp = await getUserProfile(user.uid);
-        setAllProfiles(resp);
-      }
-    })();
-  }, [user]);
+  const persistInFirestore = useCallback(
+    async (data) => {
+      //Persist in firestore
+      await updateWishList(user, currentProfile, data);
+    },
+    [user, currentProfile]
+  );
+
+  const addOnWatchLater = useCallback(
+    (movie: Result) => {
+      const newList = [...myList, movie];
+      setMyList(newList);
+      persistInFirestore(newList);
+    },
+    [myList, persistInFirestore]
+  );
+
+  const removeFromWatchLater = useCallback(
+    (movie: Result) => {
+      const indexId = [...myList].findIndex(
+        (value: Result) => value.id === movie.id
+      );
+      const modifyList = [...myList];
+      modifyList.splice(indexId, 1);
+      setMyList(modifyList);
+      persistInFirestore(modifyList);
+    },
+    [myList, persistInFirestore]
+  );
 
   return {
-    allProfiles,
     setStorageCurrentProfile,
     currentProfile,
+    myList,
+    addOnWatchLater,
+    removeFromWatchLater,
+    setMyList,
   };
 }

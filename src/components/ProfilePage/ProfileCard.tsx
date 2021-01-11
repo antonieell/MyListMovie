@@ -5,10 +5,14 @@ import { useRouter } from "next/router";
 
 interface ProfileCardProps {
   setPopUpOpen: (x: boolean) => void;
+  allProfiles: any[];
 }
 
-export const ProfileCard: React.FC<ProfileCardProps> = ({ setPopUpOpen }) => {
-  const { allProfiles, setStorageCurrentProfile } = useProfile();
+export const ProfileCard: React.FC<ProfileCardProps> = ({
+  setPopUpOpen,
+  allProfiles,
+}) => {
+  const { setStorageCurrentProfile } = useProfile();
   const router = useRouter();
 
   // Callback to onClick pick the Profile

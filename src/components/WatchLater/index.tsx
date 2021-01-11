@@ -1,14 +1,14 @@
 import { AiOutlinePlus, AiOutlineCheck } from "react-icons/ai";
 import { Result } from "src/types/tmdb";
 import { useMemo, useCallback } from "react";
-import { useWatchLater } from "src/contexts/watchLater";
+import {useProfile} from "src/contexts/profiles";
 
 interface WatchLaterProps {
   movie: Result;
 }
 
 const WatchLater: React.FC<WatchLaterProps> = ({ movie }) => {
-  const { addOnWatchLater, removeFromWatchLater, myList } = useWatchLater();
+  const { addOnWatchLater, removeFromWatchLater, myList } = useProfile();
 
   const alreadyInList = useMemo(() => {
     const index = myList?.findIndex((v: Result) => v.id === movie.id);
