@@ -31,6 +31,22 @@ function useProvideAuth() {
     }
   };
 
+  const signinWithFacebook = () => {
+    const user = firebase
+      .auth()
+      .signInWithPopup(new firebase.auth.FacebookAuthProvider())
+      .then(({ user }) => {
+        const formatedUser = {
+          uid: user.uid,
+          email: user.email,
+          name: user.displayName,
+        };
+        createUser(user.uid, formatedUser);
+        setUser(formatedUser);
+        setLocalStorage("user", user);
+      });
+  };
+
   const loginWithEmailAndPassword = async (email: string, password: string) => {
     const { user } = await firebase
       .auth()
@@ -63,6 +79,7 @@ function useProvideAuth() {
     user,
     signout,
     createUserWithEmailAndPassword,
+    signinWithFacebook,
     loginWithEmailAndPassword,
   };
 }

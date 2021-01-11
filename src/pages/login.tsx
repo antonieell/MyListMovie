@@ -6,12 +6,16 @@ import { Layout } from "../components/Layout/index";
 
 const Login = () => {
   const { handleSubmit, register } = useForm();
-  const { loginWithEmailAndPassword } = useAuth();
+  const { loginWithEmailAndPassword, signinWithFacebook } = useAuth();
   const router = useRouter();
 
   const onSubmit = async (data: any) => {
     await loginWithEmailAndPassword(data.email, data.password);
     router.push("/profile");
+  };
+
+  const loginComFacebook = async () => {
+    await signinWithFacebook();
   };
 
   return (
@@ -52,6 +56,14 @@ const Login = () => {
               type="submit"
             >
               Login
+            </button>
+
+            <button
+              className="inline px-4 py-2 mr-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+              onClick={() => loginComFacebook()}
+              type="button"
+            >
+              Login com facebook
             </button>
             <Link href="/register">
               <a href="/register" className="text-blue-400">
