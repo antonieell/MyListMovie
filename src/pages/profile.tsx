@@ -1,5 +1,4 @@
 import Head from "next/head";
-import HOCPrivateRoute from "src/HOC/PrivateRoute";
 import {
   Container,
   ProfileCard,
@@ -8,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { useAuth } from "src/lib/auth";
 import { useRouter } from "next/router";
+import { setLocalStorage } from "src/utils/localStorage";
 
 export default function Home() {
   const [isPopUpOpen, setPopUpOpen] = useState(false);
@@ -15,8 +15,9 @@ export default function Home() {
   const { user } = useAuth();
 
   useEffect(() => {
+    setLocalStorage("currentProfile", null);
     if (!user) {
-      console.log('Você precisa estar logado para escolher um perfil')
+      console.log("Você precisa estar logado para escolher um perfil");
       router.push("/login");
     }
   });
