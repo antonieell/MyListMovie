@@ -19,13 +19,13 @@ const useAuthVerify = () => {
 
       return;
     }
-    if (!currentProfile) {
+    if (!currentProfile && route.pathname !== "/profile") {
       console.log("Você não pode acessar essa rota pois não está logado");
       route.push("/profile");
 
       return;
     }
-  }, [route, user]);
+  }, [route, user, currentProfile]);
 };
 
 export default HOCPrivateRoute;
