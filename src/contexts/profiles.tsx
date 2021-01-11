@@ -52,11 +52,18 @@ function useProviderProfile() {
     [user, currentProfile]
   );
 
+  const persistInLocalStorage = useCallback((modifyList) => {
+    const userInStorage = getLocalStorage("currentProfile");
+    const newData = { ...userInStorage, wishList: modifyList };
+    setLocalStorage("currentProfile", newData);
+  }, []);
+
   const addOnWatchLater = useCallback(
     (movie: Result) => {
       const newList = [...myList, movie];
       setMyList(newList);
       persistInFirestore(newList);
+      persistInLocalStorage(newList);
     },
     [myList, persistInFirestore]
   );
@@ -70,6 +77,7 @@ function useProviderProfile() {
       modifyList.splice(indexId, 1);
       setMyList(modifyList);
       persistInFirestore(modifyList);
+      persistInLocalStorage(modifyList)
     },
     [myList, persistInFirestore]
   );
