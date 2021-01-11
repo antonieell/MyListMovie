@@ -13,6 +13,7 @@ import { useAuth } from "src/lib/auth";
 
 export default function Home() {
   // Toggle popup to create new profile
+  const [toggleToUpdate, setToggleToUpdate] = useState(false);
   const [isPopUpOpen, setPopUpOpen] = useState(false);
   const { setMyList } = useProfile();
   const [allProfiles, setAllProfiles] = useState([]);
@@ -29,7 +30,7 @@ export default function Home() {
         setAllProfiles(resp);
       }
     })();
-  }, [setMyList, setAllProfiles, user]);
+  }, [setMyList, setAllProfiles, user, toggleToUpdate]);
 
   return (
     <>
@@ -40,7 +41,9 @@ export default function Home() {
       <HOCPrivateRoute>
         <Container>
           <ProfileCard {...{ setPopUpOpen, allProfiles }} />
-          {isPopUpOpen && <PopUpCreateNewProfile {...{ setPopUpOpen }} />}
+          {isPopUpOpen && (
+            <PopUpCreateNewProfile {...{ setPopUpOpen, setToggleToUpdate }} />
+          )}
         </Container>
       </HOCPrivateRoute>
     </>

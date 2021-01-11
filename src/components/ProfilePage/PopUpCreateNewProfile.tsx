@@ -5,12 +5,13 @@ import { setUserProfile } from "src/lib/db";
 
 interface PopUpCreateNewProfileProps {
   setPopUpOpen: (x: boolean) => void;
+  setToggleToUpdate: any;
 }
 
 export const PopUpCreateNewProfile: React.FC<PopUpCreateNewProfileProps> = ({
   setPopUpOpen,
+  setToggleToUpdate,
 }) => {
-  const { fetchUserProfile } = useProfile();
   const { user } = useAuth();
   const [profileName, setProfileName] = useState("");
 
@@ -18,10 +19,9 @@ export const PopUpCreateNewProfile: React.FC<PopUpCreateNewProfileProps> = ({
     // Persist new profile
     await setUserProfile(user.uid, profileName);
     // Upedate profile list
-    await fetchUserProfile();
-    setProfileName("");
+    setToggleToUpdate((prev) => !prev);
     setPopUpOpen(false);
-  }, [user, profileName, setPopUpOpen, fetchUserProfile]);
+  }, [user, profileName, setPopUpOpen, setToggleToUpdate]);
 
   return (
     <div className="absolute inset-0 z-10 grid place-items-center">
