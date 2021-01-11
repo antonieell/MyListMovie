@@ -40,3 +40,15 @@ export async function getUserProfile(uid: string) {
     console.log(error);
   }
 }
+
+export async function updateWishList(user, currentProfile, wishList) {
+  try {
+    return await usersCollectionRef
+      .doc(user.uid)
+      .collection("profiles")
+      .doc(currentProfile.profileId)
+      .update({ wishList });
+  } catch (error) {
+    console.log(error);
+  }
+}

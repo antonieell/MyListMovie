@@ -5,8 +5,10 @@ import {
   useContext,
   useCallback,
 } from "react";
+import { useAuth } from "src/lib/auth";
+import { updateWishList } from "src/lib/db";
 import { Result } from "src/types/tmdb";
-import { setLocalStorage } from "src/utils/localStorage";
+import { getLocalStorage, setLocalStorage } from "src/utils/localStorage";
 import { useProfile } from "./profiles";
 
 const watchLaterContext = createContext<any | null>(null);
@@ -24,9 +26,18 @@ export const useWatchLater = () => {
   return useContext(watchLaterContext);
 };
 
+const initMyList = () => {
+  const profile = getLocalStorage("currentProfile");
+  if (profile) {
+    return profile.wishList;
+  }
+  return [];
+};
+
 export const useWatchLaterProvider = () => {
+  const { user } = useAuth();
   const { currentProfile } = useProfile();
-  const [myList, setMyList] = useState<Array<Result>>([]);
+  const [myList, setMyList] = useState<Array<Result>>(initMyList());
 
   const addOnWatchLater = useCallback((movie: Result) => {
     setMyList((previuous) => [...previuous, movie]);
@@ -41,10 +52,21 @@ export const useWatchLaterProvider = () => {
     setMyList(modifyList);
   };
 
-  useEffect(() => {
+  const persistInLocalStorage = useCallback(() => {
     const newStorage = { ...currentProfile, wishList: myList };
+    //Persist in localStorage
     setLocalStorage("currentProfile", newStorage);
   }, [myList, currentProfile]);
+
+  const persistInFirestore = useCallback(async () => {
+    //Persist in firestore
+    await updateWishList(user, currentProfile, myList);
+  }, [user, myList, currentProfile]);
+
+  useEffect(() => {
+    persistInLocalStorage();
+    persistInFirestore();
+  }, [myList, persistInFirestore, persistInLocalStorage]);
 
   return {
     myList,
