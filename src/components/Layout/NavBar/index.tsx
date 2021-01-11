@@ -44,7 +44,7 @@ const NavAuthenticated = ({ signout }: NavAuthenticatedProps) => {
       <Link href="/profile">
         <a>Meu Perfil</a>
       </Link>
-      <Link href="#">
+      <Link href="/mylist">
         <a>Minhas Listas</a>
       </Link>
       <button onClick={signout}>Logout</button>
