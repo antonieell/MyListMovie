@@ -32,7 +32,7 @@ function useProvideAuth() {
   };
 
   const signinWithFacebook = () => {
-    const user = firebase
+    return firebase
       .auth()
       .signInWithPopup(new firebase.auth.FacebookAuthProvider())
       .then(({ user }) => {

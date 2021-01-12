@@ -15,7 +15,9 @@ const Login = () => {
   };
 
   const loginComFacebook = async () => {
-    await signinWithFacebook();
+    signinWithFacebook().then(() => {
+      router.push("/profile");
+    });
   };
 
   return (
@@ -34,7 +36,7 @@ const Login = () => {
               type="email"
               name="email"
               ref={register}
-              className="w-full px-3 py-2 leading-tight text-gray-700 border border-blue-300 rounded shadow appearance-none focus:outline-none focus:shadow-outline "
+              className="w-full px-3 py-2 leading-tight text-gray-700 border border-gray-300 rounded shadow appearance-none focus:outline-none focus:shadow-outline "
               placeholder="JohnDoe@example.com"
             />
           </div>
@@ -46,27 +48,27 @@ const Login = () => {
               type="password"
               name="password"
               ref={register}
-              className="w-full px-3 py-2 leading-tight text-gray-700 border border-blue-300 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 leading-tight text-gray-700 border border-gray-300 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               placeholder="Enter your password"
             />
           </div>
           <div>
             <button
-              className="inline px-4 py-2 mx-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+              className="inline px-4 py-2 mx-4 font-bold text-white bg-black rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
               type="submit"
             >
               Login
             </button>
 
             <button
-              className="inline px-4 py-2 mr-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+              className="inline px-4 py-2 mr-4 font-bold text-black bg-transparent border border-black rounded hover:bg-gray-300 focus:outline-none focus:shadow-outline"
               onClick={() => loginComFacebook()}
               type="button"
             >
               Login com facebook
             </button>
             <Link href="/register">
-              <a href="/register" className="text-blue-400">
+              <a href="/register" className="font-black text-gray-600">
                 Cadastre-se
               </a>
             </Link>
